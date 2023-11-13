@@ -82,6 +82,9 @@ class Jwt
         // Create token header as a JSON string
         $header = json_encode($this->header);
 
+        // Encode Header to Base64Url String
+        $base64UrlHeader = $this->encode($header);
+
         // Create token payload as a JSON string
         if(isset($this->header['encrypt']) && $this->header['encrypt']){
             CryptSso::setSecretKey($this->secretKey);
@@ -90,9 +93,6 @@ class Jwt
             }
         }
         $payload = json_encode($this->payload);
-
-        // Encode Header to Base64Url String
-        $base64UrlHeader = $this->encode($header);
 
         // Encode Payload to Base64Url String
         $base64UrlPayload = $this->encode($payload);

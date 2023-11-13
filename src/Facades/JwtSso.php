@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Facade;
  * @method static array getPayload()
  * @method static object getObjectPayload()
  * @method static string generate()
- * @method static static validate()
+ * @method static static validate(string $token)
  *
- * @see \AdityaDarma\LaravelJwtSso\Crypt
+ * @see \AdityaDarma\LaravelJwtSso\Jwt
  */
 class JwtSso extends Facade
 {
@@ -24,6 +24,6 @@ class JwtSso extends Facade
      */
     protected static function getFacadeAccessor(): string
     {
-        return 'JwtSso';
+        return 'jwt-sso';
     }
 }

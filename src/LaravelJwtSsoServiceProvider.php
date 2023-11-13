@@ -34,10 +34,11 @@ class LaravelJwtSsoServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind('JwtSso', function(){
+        $this->app->bind('jwt-sso', function(){
             return new Jwt();
         });
-        $this->app->bind('CryptSso', function(){
+
+        $this->app->bind('crypt-sso', function(){
             return new Crypt();
         });
     }

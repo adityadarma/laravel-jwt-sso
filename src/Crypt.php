@@ -7,7 +7,8 @@ use AdityaDarma\LaravelJwtSso\Facades\JwtSso;
 
 class Crypt
 {
-    protected string $secretKey;
+    private string $secretKey;
+    private string $dataKey = 'xZStOtGzCAN0yo6Y2srNuc0OOAGbg2Md';
 
     /**
      * Set secret key
@@ -30,8 +31,7 @@ class Crypt
      */
     public function encrypt(mixed $value): string
     {
-        $secret = 'xZStOtGzCAN0yo6Y2srNuc0OOAGbg2Md';
-        $iv = substr(hash('sha256', $secret), 0, 16);
+        $iv = substr(hash('sha256', $this->dataKey), 0, 16);
         $options = 0;
 
         $ciphertext = openssl_encrypt(
@@ -54,8 +54,7 @@ class Crypt
      */
     public function decrypt(string $value): string
     {
-        $secret = 'xZStOtGzCAN0yo6Y2srNuc0OOAGbg2Md';
-        $iv = substr(hash('sha256', $secret), 0, 16);
+        $iv = substr(hash('sha256', $this->dataKey), 0, 16);
         $options = 0;
 
         $ciphertext = base64_decode(str_pad(strtr($value, '-_', '+/'), strlen($value) % 4, '=', STR_PAD_RIGHT));

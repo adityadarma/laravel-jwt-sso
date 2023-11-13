@@ -20,6 +20,6 @@ class CryptSso extends Facade
      */
     protected static function getFacadeAccessor(): string
     {
-        return 'CryptSso';
+        return 'crypt-sso';
     }
 }
