@@ -2,7 +2,6 @@
 
 namespace AdityaDarma\LaravelJwtSso;
 
-use AdityaDarma\LaravelJwtSso\Exception\DecryptException;
 use AdityaDarma\LaravelJwtSso\Facades\CryptSso;
 
 class Jwt
@@ -11,6 +10,7 @@ class Jwt
     private string $secretKey;
     private array $header = ['typ' => 'JWT', 'alg' => 'HS256'];
     private array $payload = [];
+    protected string $token;
 
     /**
      * Set secret key
@@ -108,15 +108,36 @@ class Jwt
     }
 
     /**
-     * Validate token
+     * Set token
      *
      * @param string $token
      * @return static
-     * @throws DecryptException
      */
-    public function validate(string $token): static
+    public function setToken(string $token): static
     {
-        list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $token);
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * Get token
+     *
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    /**
+     * Validate token
+     *
+     * @return bool
+     */
+    public function validate(): bool
+    {
+        list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $this->token);
 
         $dataEncoded = "$headerEncoded.$payloadEncoded";
         $signature = $this->decode($signatureEncoded);
@@ -137,9 +158,9 @@ class Jwt
                 }
             }
 
-            return $this;
+            return true;
         }else{
-            throw new DecryptException('Token not valid!');
+            return false;
         }
     }
 

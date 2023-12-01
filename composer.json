@@ -34,5 +34,5 @@
 		"preferred-install": "dist",
 		"optimize-autoloader": true
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "stable"
 }
