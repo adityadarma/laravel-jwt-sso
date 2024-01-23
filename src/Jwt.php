@@ -91,7 +91,7 @@ class Jwt
         if(isset($this->header['encrypt']) && $this->header['encrypt']){
             SsoCrypt::setSecretKey($this->secretKey);
             foreach ($this->payload as $key => $value){
-                $this->payload[$key] = SsoCrypt::encrypt($value);
+                $this->payload[$key] = $value !== null ? SsoCrypt::encrypt($value) : null;
             }
         }
         $payload = json_encode($this->payload, JSON_THROW_ON_ERROR);
@@ -147,7 +147,7 @@ class Jwt
             if(isset($header['encrypt']) && $header['encrypt']){
                 SsoCrypt::setSecretKey($this->secretKey);
                 foreach ($this->payload as $key => $value){
-                    $this->payload[$key] = SsoCrypt::decrypt($value);
+                    $this->payload[$key] = $value !== null ? SsoCrypt::decrypt($value) : null;
                 }
             }
 
