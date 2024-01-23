@@ -105,21 +105,10 @@ class Jwt
         // Encode Signature to Base64Url String
         $base64UrlSignature = $this->encode($signature);
 
-        // Create JWT
-        return $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
-    }
+        // Set JWT token
+        $this->token = $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
 
-    /**
-     * Set token
-     *
-     * @param string $token
-     * @return static
-     */
-    public function setToken(string $token): static
-    {
-        $this->token = $token;
-
-        return $this;
+        return $this->token;
     }
 
     /**
@@ -135,12 +124,13 @@ class Jwt
     /**
      * Validate token
      *
+     * @param string $token
      * @return bool
      * @throws JsonException
      */
-    public function validate(): bool
+    public function validate(string $token): bool
     {
-        [$headerEncoded, $payloadEncoded, $signatureEncoded] = explode('.', $this->token);
+        [$headerEncoded, $payloadEncoded, $signatureEncoded] = explode('.', $token);
 
         $dataEncoded = "$headerEncoded.$payloadEncoded";
         $signature = $this->decode($signatureEncoded);
