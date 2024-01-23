@@ -2,6 +2,7 @@
 
 namespace AdityaDarma\LaravelJwtSso;
 
+use AdityaDarma\LaravelJwtSso\Facades\SsoJwt;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelJwtSsoServiceProvider extends ServiceProvider
@@ -23,12 +24,16 @@ class LaravelJwtSsoServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind('jwt-sso', function(){
+        $this->app->bind('sso-jwt', function(){
             return new Jwt();
         });
 
-        $this->app->bind('crypt-sso', function(){
+        $this->app->bind('sso-crypt', function(){
             return new Crypt();
+        });
+
+        $this->app->singleton(SsoJwt::class, function() {
+            return new SsoJwt();
         });
     }
 }

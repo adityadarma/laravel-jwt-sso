@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Facade;
  *
  * @see \AdityaDarma\LaravelJwtSso\Crypt
  */
-class CryptSso extends Facade
+class SsoCrypt extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -20,6 +20,6 @@ class CryptSso extends Facade
      */
     protected static function getFacadeAccessor(): string
     {
-        return 'crypt-sso';
+        return 'sso-crypt';
     }
 }

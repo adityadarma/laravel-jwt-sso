@@ -3,7 +3,7 @@
 namespace AdityaDarma\LaravelJwtSso;
 
 use AdityaDarma\LaravelJwtSso\Exception\DecryptException;
-use AdityaDarma\LaravelJwtSso\Facades\JwtSso;
+use AdityaDarma\LaravelJwtSso\Facades\SsoJwt;
 
 class Crypt
 {

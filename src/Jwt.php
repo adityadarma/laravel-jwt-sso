@@ -2,7 +2,7 @@
 
 namespace AdityaDarma\LaravelJwtSso;
 
-use AdityaDarma\LaravelJwtSso\Facades\CryptSso;
+use AdityaDarma\LaravelJwtSso\Facades\SsoCrypt;
 use JsonException;
 
 class Jwt
@@ -89,9 +89,9 @@ class Jwt
 
         // Create token payload as a JSON string
         if(isset($this->header['encrypt']) && $this->header['encrypt']){
-            CryptSso::setSecretKey($this->secretKey);
+            SsoCrypt::setSecretKey($this->secretKey);
             foreach ($this->payload as $key => $value){
-                $this->payload[$key] = CryptSso::encrypt($value);
+                $this->payload[$key] = SsoCrypt::encrypt($value);
             }
         }
         $payload = json_encode($this->payload, JSON_THROW_ON_ERROR);
@@ -145,9 +145,9 @@ class Jwt
             $header = json_decode($this->decode($headerEncoded), true, 512, JSON_THROW_ON_ERROR);
             $this->payload = json_decode($this->decode($payloadEncoded), true, 512, JSON_THROW_ON_ERROR);
             if(isset($header['encrypt']) && $header['encrypt']){
-                CryptSso::setSecretKey($this->secretKey);
+                SsoCrypt::setSecretKey($this->secretKey);
                 foreach ($this->payload as $key => $value){
-                    $this->payload[$key] = CryptSso::decrypt($value);
+                    $this->payload[$key] = SsoCrypt::decrypt($value);
                 }
             }
 
