@@ -3,6 +3,7 @@
 namespace AdityaDarma\LaravelJwtSso;
 
 use AdityaDarma\LaravelJwtSso\Facades\CryptSso;
+use JsonException;
 
 class Jwt
 {
@@ -76,11 +77,12 @@ class Jwt
      * Generate token
      *
      * @return string
+     * @throws JsonException
      */
     public function generate(): string
     {
         // Create token header as a JSON string
-        $header = json_encode($this->header);
+        $header = json_encode($this->header, JSON_THROW_ON_ERROR);
 
         // Encode Header to Base64Url String
         $base64UrlHeader = $this->encode($header);
@@ -92,7 +94,7 @@ class Jwt
                 $this->payload[$key] = CryptSso::encrypt($value);
             }
         }
-        $payload = json_encode($this->payload);
+        $payload = json_encode($this->payload, JSON_THROW_ON_ERROR);
 
         // Encode Payload to Base64Url String
         $base64UrlPayload = $this->encode($payload);
@@ -134,10 +136,11 @@ class Jwt
      * Validate token
      *
      * @return bool
+     * @throws JsonException
      */
     public function validate(): bool
     {
-        list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $this->token);
+        [$headerEncoded, $payloadEncoded, $signatureEncoded] = explode('.', $this->token);
 
         $dataEncoded = "$headerEncoded.$payloadEncoded";
         $signature = $this->decode($signatureEncoded);
@@ -149,8 +152,8 @@ class Jwt
         );
 
         if(hash_equals($rawSignature, $signature)){
-            $header = json_decode($this->decode($headerEncoded), true);
-            $this->payload = json_decode($this->decode($payloadEncoded), true);
+            $header = json_decode($this->decode($headerEncoded), true, 512, JSON_THROW_ON_ERROR);
+            $this->payload = json_decode($this->decode($payloadEncoded), true, 512, JSON_THROW_ON_ERROR);
             if(isset($header['encrypt']) && $header['encrypt']){
                 CryptSso::setSecretKey($this->secretKey);
                 foreach ($this->payload as $key => $value){
@@ -159,9 +162,9 @@ class Jwt
             }
 
             return true;
-        }else{
-            return false;
         }
+
+        return false;
     }
 
     /**
