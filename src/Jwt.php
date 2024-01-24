@@ -42,12 +42,13 @@ class Jwt
     /**
      * Encrypt payload before generate token
      *
+     * @param bool $encrypt
      * @return $this
      */
-    public function encryptPayload(): static
+    public function encryptPayload(bool $encrypt = true): static
     {
         $this->header = array_merge($this->header, [
-            'encrypt' => true
+            'encrypt' => $encrypt
         ]);
 
         return $this;

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static static setSecretKey($secretKey)
- * @method static static encryptPayload()
+ * @method static static encryptPayload(bool $encrypt)
  * @method static static setPayload(array $payload)
  * @method static array getPayload()
  * @method static object getObjectPayload()
