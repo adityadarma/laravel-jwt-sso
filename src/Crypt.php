@@ -3,7 +3,6 @@
 namespace AdityaDarma\LaravelJwtSso;
 
 use AdityaDarma\LaravelJwtSso\Exception\DecryptException;
-use AdityaDarma\LaravelJwtSso\Facades\SsoJwt;
 
 class Crypt
 {
@@ -66,7 +65,7 @@ class Crypt
             $iv
         );
         if (!$decode) {
-            throw new DecryptException('Cant decrypt this value');
+            throw new DecryptException('Cant decrypt this value:'. $value);
         }
 
         return $decode;
