@@ -3,6 +3,8 @@
 namespace AdityaDarma\LaravelJwtSso;
 
 use AdityaDarma\LaravelJwtSso\Exception\DecryptException;
+use JsonException;
+use function PHPUnit\Framework\isJson;
 
 class Crypt
 {
@@ -25,13 +27,16 @@ class Crypt
     /**
      * Encrypt value
      *
-     * @param string $value
+     * @param mixed $value
      * @return string
+     * @throws JsonException
      */
     public function encrypt(mixed $value): string
     {
         $iv = substr(hash('sha256', $this->dataKey), 0, 16);
         $options = 0;
+
+        $value = is_array($value) ? json_encode($value, JSON_THROW_ON_ERROR) : $value;
 
         $ciphertext = openssl_encrypt(
             $value,
@@ -47,11 +52,12 @@ class Crypt
     /**
      * Decrypt value
      *
-     * @param string $value
-     * @return string
+     * @param mixed $value
+     * @return mixed
      * @throws DecryptException
+     * @throws JsonException
      */
-    public function decrypt(string $value): string
+    public function decrypt(mixed $value): mixed
     {
         $iv = substr(hash('sha256', $this->dataKey), 0, 16);
         $options = 0;
@@ -68,6 +74,13 @@ class Crypt
             throw new DecryptException('Cant decrypt this value:'. $value);
         }
 
-        return $decode;
+        return $this->isJsonString($decode)
+            ? json_decode($decode, false, 512, JSON_THROW_ON_ERROR)
+            : $decode;
+    }
+
+    public function isJsonString($string): bool
+    {
+        return is_string($string) && is_array(json_decode($string, true)) && (json_last_error() === JSON_ERROR_NONE);
     }
 }
