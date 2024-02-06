@@ -5,7 +5,7 @@ This package is build-in to make jwt and encrypt payload.
 ### Library:
 
 - [SSO Server](https://github.com/adityadarma/laravel-sso-server)
-- [SSO Client](https://github.com/adityadarma/laravel-sso-client)
+- [SSO Broker](https://github.com/adityadarma/laravel-sso-broker)
 
 ## License
 

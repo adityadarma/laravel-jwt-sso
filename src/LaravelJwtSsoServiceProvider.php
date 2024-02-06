@@ -8,16 +8,6 @@ use Illuminate\Support\ServiceProvider;
 class LaravelJwtSsoServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot(): void
-    {
-
-    }
-
-    /**
      * Register services.
      *
      * @return void
@@ -35,5 +25,15 @@ class LaravelJwtSsoServiceProvider extends ServiceProvider
         $this->app->singleton(SsoJwt::class, function() {
             return new SsoJwt();
         });
+    }
+
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot(): void
+    {
+        //
     }
 }
